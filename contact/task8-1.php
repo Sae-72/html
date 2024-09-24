@@ -11,11 +11,15 @@ if (empty($_POST['furigana'])){
 }
 if (empty($_POST['email'])){
   $error[] = "アドレスを入力してください。";
+} elseif(strpos($_POST['email'],'@') == false) {
+  $error[] = "メールアドレスに＠が含まれてません。";
 } else {
   $email = $_POST['email'];
 }
 if (empty($_POST['phone'])){
   $error[] = "電話番号を入力してください。";
+} elseif(strlen($_POST['phone']) < 10 || strlen($_POST['phone']) > 11){
+  $error[] = "正しい電話番号を入力してください。";
 } else {
   $phone = $_POST['phone'];
 }
@@ -29,13 +33,14 @@ if (empty($_POST['message'])){
 } else {
   $message = $_POST['message'];
 }
-if (empty($_POST['check'])){
+if (empty($_POST['privacy'])){
   $error[] = "個人情報保護方針に同意してください。";
 } else {
-  $check = $_POST['check'];
+  $privacy = $_POST['privacy'];
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -79,40 +84,48 @@ if (empty($_POST['check'])){
         <form action="task8-1.php" method="POST">
           <div class="form-group">
               <label for="name">お名前 <span class="required">必須</span></label>
-              <input type="text" id="name" name="name" placeholder="山田太郎" value = "<?= $name ?>">
+              <input type="text" name="name" placeholder="山田太郎" value = "<?= $name ?>">
           </div>
           <div class="form-group">
               <label for="furigana">フリガナ <span class="required">必須</span></label>
-              <input type="text" id="furigana" name="furigana" placeholder="ヤマダタロウ" value = "<?= $furigana ?>">
+              <input type="text" name="furigana" placeholder="ヤマダタロウ" value = "<?= $furigana ?>">
           </div>
           <div class="form-group">
               <label for="email">メールアドレス <span class="required">必須</span></label>
-              <input type="email" id="email" name="email" placeholder="info@fast-creademy.jp" value = "<?= $email ?>">
+              <input type="text" name="email" placeholder="info@fast-creademy.jp" value = "<?= $email ?>">
           </div>
           <div class="form-group">
               <label for="phone">電話番号 <span class="required">必須</span></label>
-              <input type="tel" id="phone" name="phone" placeholder="090-1234-5678" value = "<?= $phone ?>">
+              <input type="tel" name="phone" placeholder="090-1234-5678" value = "<?= $phone ?>">
           </div>
           <div class="form-group">
-              <label for="inquiry">お問い合わせ項目 <span class="required">必須</span></label>
-              <select id="inquiry" name="inquiry">
-                  <option value="" <?= empty($select) ?>>選択してください</option>
-                  <option value="質問">質問</option>
-                  <option value="要望">要望</option>
-                  <option value="その他">その他</option>
+              <label for="select">お問い合わせ項目 <span class="required">必須</span></label>
+              <select name="select">
+                  <option value="" >選択してください</option>
+                  <option value="質問" <?php if ($select == "質問"){echo selected;} ?>>質問</option>
+                  <option value="要望"<?php if ($select == "要望"){echo selected;} ?>>要望</option>
+                  <option value="その他"<?php if ($select == "その他"){echo selected;} ?>>その他</option>
               </select>
           </div>
           <div class="form-group">
               <label for="message">お問い合わせ内容<span class="required">必須</span></label>
-              <textarea id="message" name="message" placeholder="こちらにお問い合わせ内容をご記入ください" rows="5"><?= $message ?></textarea>
+              <textarea name="message" placeholder="こちらにお問い合わせ内容をご記入ください" rows="5"><?= $message ?></textarea>
           </div>
           <div class="form-group_01">
               <label for="privacy">個人情報保護方針 <span class="required">必須</span></label>
               <div class="check_privacy">
-                <input type="checkbox" id="privacy" name="privacy" value="1" <?= empty($check) ?>><a href="#">個人情報保護方針</a><i class="fa-solid fa-window-restore"></i>に同意します。
+                <input type="checkbox" name="privacy" value="1" <?php if($privacy == 1){echo checked;} ?>><a href="#">個人情報保護方針</a><i class="fa-solid fa-window-restore"></i>に同意します。
               </div>
           </div>
-          <button type="submit">確認</button>
+          
+          <?php 
+          if(empty($_POST)){
+            echo '<a href="task8-2.php" class="btn">確認</a>';
+          } else {
+            echo '<a href="task8-2.php" class="btn">送信</a>';
+          }
+          ?>
+
       </form>
     </section>
     <section class="sec_05">

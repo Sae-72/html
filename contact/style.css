@@ -137,7 +137,7 @@ header h1{
   margin-left: 20px;
 }
 
-.contact-form button {
+.contact-form .btn {
   width: 300px;
   background: #075007;
   color: #fff;
